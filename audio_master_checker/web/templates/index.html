@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Audio Master Checker</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <h1>Audio Master Checker</h1>
+        <p>Analyze masters, create safer delivery WAVs, and compare results.</p>
+      </div>
+    </header>
+
+    <section class="panel">
+      <h2>Analyze</h2>
+      <form action="/analyze" method="post" enctype="multipart/form-data">
+        <label>Audio files</label>
+        <input type="file" name="files" multiple required>
+        <label class="check"><input type="checkbox" name="codec_tests" value="true" checked> Run codec stress tests</label>
+        <button type="submit">Analyze</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Create Safer Delivery</h2>
+      <form action="/fix" method="post" enctype="multipart/form-data">
+        <label>Master WAV</label>
+        <input type="file" name="file" required>
+        <div class="grid">
+          <label>Trim dB <input type="number" name="trim" value="-1.5" step="0.1" max="0"></label>
+          <label>Bit depth
+            <select name="bit_depth">
+              <option value="24" selected>24-bit PCM</option>
+              <option value="16">16-bit PCM</option>
+              <option value="32f">32-bit float</option>
+            </select>
+          </label>
+        </div>
+        <label class="check"><input type="checkbox" name="compare" value="true" checked> Include original-vs-fixed comparison</label>
+        <label class="check"><input type="checkbox" name="codec_tests" value="true" checked> Run codec stress tests</label>
+        <button type="submit">Create Fixed WAV</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Compare</h2>
+      <form action="/compare" method="post" enctype="multipart/form-data">
+        <label>Original</label>
+        <input type="file" name="original" required>
+        <label>Fixed</label>
+        <input type="file" name="fixed" required>
+        <label class="check"><input type="checkbox" name="codec_tests" value="true" checked> Run codec stress tests</label>
+        <button type="submit">Compare</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

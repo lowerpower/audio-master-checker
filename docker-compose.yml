@@ -1,0 +1,9 @@
+services:
+  audio-master-checker-web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./web-runs:/app/web-runs
+    environment:
+      - PYTHONUNBUFFERED=1

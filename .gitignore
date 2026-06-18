@@ -1,0 +1,18 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Runtime outputs
+web-runs/
+reports/
+fixed-reports/
+smoke-*/
+tmp/
+
+# Local/system files
+.DS_Store
+*.swp
+*.swo
+
+resume.txt
