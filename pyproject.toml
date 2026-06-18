@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "audio-master-checker"
 version = "0.1.0"
-description = "CLI audio mastering analyzer and safer delivery WAV generator"
+description = "CLI and web audio mastering analyzer with safer delivery WAV generation"
 requires-python = ">=3.11"
 dependencies = [
   "numpy",

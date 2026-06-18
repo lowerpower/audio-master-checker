@@ -1,13 +1,14 @@
 # Audio Master Checker
 
-Milestone 1 is a Python CLI for checking mastered audio files. It writes one combined JSON report and one Markdown report for each run. It can also create a safer delivery WAV by applying a negative gain trim and then analyzing the result.
+Audio Master Checker is a CLI and local web UI for checking mastered audio files before delivery. It can analyze files, create safer delivery WAVs by applying a negative gain trim, compare original vs fixed files, and write JSON, Markdown, and HTML-rendered reports.
 
-Web UI, upload handling, Caddy, systemd, and HTML output are intentionally deferred.
+The project is local-first. There is no database, auth, background queue, Caddy, or systemd service yet.
 
 ## Requirements
 
 - Python 3.11+
 - `ffmpeg` with `ffprobe` available on `PATH`
+- `libsndfile` available to Python through `soundfile`; the Docker image installs this for you
 
 ## Setup
 
@@ -146,6 +147,14 @@ Open:
 http://localhost:8000
 ```
 
+To expose the development server on your LAN, bind to all interfaces:
+
+```bash
+uvicorn audio_master_checker.web.app:app --host 0.0.0.0 --port 8000
+```
+
+Then open `http://<your-lan-ip>:8000` from another device.
+
 The web UI supports:
 
 - Upload one or more files for analysis.
@@ -214,8 +223,10 @@ safer_trim_db = max(0, true_peak_dbtp - (-1.5))
 audio-master-checker analyze "tmp/Mycal - Konocti Sunset [6-11-26 WAV].wav" --out ./reports --report-name konocti-original
 audio-master-checker fix "tmp/Mycal - Konocti Sunset [6-11-26 WAV].wav" --trim -1.5 --out ./fixed-reports --report-name konocti-fixed --compare
 audio-master-checker compare "tmp/Mycal - Konocti Sunset [6-11-26 WAV].wav" "tmp/Mycal - Konocti Sunset [6-11-26 WAV] [-1.5dB delivery].wav" --out ./reports --report-name konocti-compare
-python3 -m json.tool reports/report.json
-sed -n '1,220p' reports/report.md
+python3 -m json.tool reports/konocti-original.json
+sed -n '1,220p' reports/konocti-original.md
+python3 -m json.tool fixed-reports/konocti-fixed-compare.json
+sed -n '1,120p' fixed-reports/konocti-fixed-compare.md
 ```
 
 If that sample file is not present, generate a small test WAV and run the CLI:
@@ -226,6 +237,8 @@ ffmpeg -y -f lavfi -i sine=frequency=1000:duration=1 -ar 48000 -ac 2 -c:a pcm_s2
 audio-master-checker analyze tmp/sample.wav --out ./reports --report-name sample
 audio-master-checker fix tmp/sample.wav --trim -1.5 --out ./fixed-reports --report-name sample-fixed --compare
 audio-master-checker compare tmp/sample.wav "tmp/sample [-1.5dB delivery].wav" --out ./reports --report-name sample-compare
+python3 -m json.tool reports/sample.json
+sed -n '1,120p' reports/sample.md
 ```
 
 ## Test

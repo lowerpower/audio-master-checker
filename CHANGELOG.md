@@ -2,6 +2,20 @@
 
 All notable project changes will be tracked here going forward.
 
+## 2026-06-18
+
+### Changed
+
+- Updated README project overview to include both CLI and web UI capabilities.
+- Updated setup requirements to mention libsndfile and Docker-provided system dependencies.
+- Added LAN binding guidance for running the web UI on a local network.
+- Corrected verification commands for named report outputs.
+- Updated package description to mention CLI and web functionality.
+
+### Repository
+
+- Initialized git repository and pushed `main` to `git@github.com:lowerpower/audio-master-checker.git`.
+
 ## 2026-06-17
 
 ### Added
